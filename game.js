@@ -1,5 +1,6 @@
 /*
    熊を爆発させるゲーム
+   効果音：http://www.yen-soft.com/ssse/
 */
 
 enchant();
@@ -10,15 +11,16 @@ window.onload = function() {
 	game.fps = 30;
 	game.preload([
 			'image/bg.png',
-			'image/font.png',
 			'image/player.gif',
 			'image/chara.gif',
 			'image/effect.gif',
-			'image/icon.gif'
+			'se.mp3',
+			'bgm.mp3'
 			]);
 	game.count = 0;
 
 	game.onload = function() {
+		
 
 		game.rootScene.addEventListener('enterframe', function() {
 
@@ -30,6 +32,10 @@ window.onload = function() {
 
 			var time = (game.count / game.fps).toFixed(2);
 			timeLabel.text = "TIME: " +time + " s";
+
+			if (game.assets['bgm.mp3'].currentTime >= 39) {
+				game.assets['bgm.mp3'].play();
+			}
 
 			game.count++;
 		});
@@ -56,6 +62,9 @@ window.onload = function() {
 		timeLabel.x = timeLabel.y = 8;
 		timeLabel.font="bold 20px 'ＭＳ ゴシック',monospace";
 		timeLabel.text = "TIME";
+
+		// BGMの再生
+		game.assets['bgm.mp3'].play();
 		
 
 		// 配置
@@ -102,10 +111,12 @@ function createEnemy(game, type) {
 	var count = 0;
 	enemy.addEventListener('enterframe', function() {
 		if(enemy.x > 320) {
-			var time = (game.count / game.fps).toFixed(2);
-			game.end(time, time + "秒間、熊の魔の手から生き延びました");
+			//var time = (game.count / game.fps).toFixed(2);
+			//game.end(time, time + "秒間、熊の魔の手から生き延びました");
 		}
 		if(enemy.intersect(player)){
+			var sound = game.assets['se.mp3'].clone();
+			sound.play();
 			game.rootScene.addChild(createEffect(game, enemy.x, enemy.y));
 			game.rootScene.removeChild(this);
 		} else {

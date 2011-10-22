@@ -111,8 +111,8 @@ function createEnemy(game, type) {
 	var count = 0;
 	enemy.addEventListener('enterframe', function() {
 		if(enemy.x > 320) {
-			//var time = (game.count / game.fps).toFixed(2);
-			//game.end(time, time + "秒間、熊の魔の手から生き延びました");
+			var time = (game.count / game.fps).toFixed(2);
+			game.end(time, time + "秒間、熊の魔の手から生き延びました");
 		}
 		if(enemy.intersect(player)){
 			var sound = game.assets['se.mp3'].clone();
